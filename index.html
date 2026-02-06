@@ -11,26 +11,25 @@
         body { font-family: 'Montserrat', sans-serif; background-color: #fff9f9; color: #4a4a4a; overflow-x: hidden; }
         h1, h2 { font-family: 'Playfair Display', serif; }
         .hero-overlay { background: rgba(0, 0, 0, 0.5); position: absolute; inset: 0; }
-        
-        /* Video Background */
         .video-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
         .video-container iframe { width: 100vw; height: 56.25vw; min-height: 100vh; min-width: 177.77vh; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
-        
         .typewriter { border-right: 2px solid #800020; white-space: pre-wrap; overflow: hidden; }
-        .gallery-card { transition: transform 0.3s ease; }
-        .gallery-card:hover { transform: translateY(-10px); }
     </style>
 </head>
 <body>
 
     <header class="relative h-screen flex flex-col items-center justify-center text-white text-center px-4">
         <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/GwckzsDf3z8?autoplay=1&mute=1&loop=1&playlist=GwckzsDf3z8&controls=0&showinfo=0&rel=0" frameborder="0"></iframe>
+            <iframe id="hero-video" src="https://www.youtube.com/embed/GwckzsDf3z8?autoplay=1&mute=1&loop=1&playlist=GwckzsDf3z8&controls=0&showinfo=0" frameborder="0"></iframe>
         </div>
         <div class="hero-overlay"></div>
         <div class="relative z-10">
             <h1 class="text-5xl md:text-7xl mb-4 italic animate-pulse">A Valentine's Proposal</h1>
-            <p class="text-xl tracking-widest uppercase font-light">Every moment led to this</p>
+            <p class="text-xl tracking-widest uppercase mb-8">Every moment led to this</p>
+            
+            <button onclick="enableSound()" id="sound-btn" class="bg-white/20 backdrop-blur-md border border-white px-6 py-2 rounded-full hover:bg-white hover:text-black transition flex items-center gap-2 mx-auto">
+                <span>🔊 Click for Music</span>
+            </button>
         </div>
     </header>
 
@@ -44,42 +43,33 @@
     <section class="bg-pink-50 py-20 px-4">
         <h2 class="text-center text-4xl mb-12 italic text-[#800020]">Our Memories</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-            <div class="gallery-card bg-white p-2 rounded-lg shadow-lg">
-                <img src="img1.jpg" class="rounded-md h-72 w-full object-cover" alt="Memory 1">
-            </div>
-            <div class="gallery-card bg-white p-2 rounded-lg shadow-lg">
-                <img src="img2.jpg" class="rounded-md h-72 w-full object-cover" alt="Memory 2">
-            </div>
-            <div class="gallery-card bg-white p-2 rounded-lg shadow-lg">
-                <img src="img3.jpg" class="rounded-md h-72 w-full object-cover" alt="Memory 3">
-            </div>
-            <div class="gallery-card bg-white p-2 rounded-lg shadow-lg">
-                <img src="img4.jpg" class="rounded-md h-72 w-full object-cover" alt="Memory 4">
-            </div>
+            <img src="img1.jpg" class="rounded-lg shadow-lg h-72 w-full object-cover">
+            <img src="img2.jpg" class="rounded-lg shadow-lg h-72 w-full object-cover">
+            <img src="img3.jpg" class="rounded-lg shadow-lg h-72 w-full object-cover">
+            <img src="img4.jpg" class="rounded-lg shadow-lg h-72 w-full object-cover">
         </div>
     </section>
 
     <section class="py-32 text-center bg-white relative min-h-[500px] flex flex-col justify-center items-center">
-        <div class="mb-10">
-            <span class="text-6xl animate-bounce inline-block">💍</span>
-        </div>
+        <div class="mb-10 text-6xl animate-bounce">💍</div>
         <h2 class="text-4xl md:text-6xl text-[#800020] mb-12 px-6 font-serif">Will you make me the luckiest person in the world?</h2>
-        
         <div class="flex flex-col md:flex-row justify-center items-center gap-8 w-full">
             <button onclick="celebrate()" class="bg-[#800020] text-white px-16 py-5 rounded-full text-2xl font-bold shadow-2xl transform hover:scale-110 transition-all z-30">YES!</button>
             <button id="no-btn" onmouseover="moveNo()" onclick="moveNo()" class="border-2 border-gray-300 text-gray-400 px-12 py-4 rounded-full text-xl transition-all duration-200 z-30">No</button>
         </div>
-        
         <p id="success-msg" class="hidden mt-16 text-4xl text-[#800020] font-bold italic animate-pulse">I love you forever!</p>
     </section>
 
-    <footer class="py-10 text-center text-sm text-gray-400">
-        Happy Valentine's Day 2026
-    </footer>
-
     <script>
-        // Typewriter Effect
-        const letter = "Every day with you feels like a new chapter in the most beautiful story ever told. You are my best friend, my greatest adventure, and my home. This Valentine's Day, I wanted to tell you that I don't just want a today with you—I want all my tomorrows. I promise to love you, support you, and be your biggest fan forever.";
+        // AUDIO FIX: Reloads the video with sound on when button is clicked
+        function enableSound() {
+            const video = document.getElementById('hero-video');
+            video.src = "https://www.youtube.com/embed/GwckzsDf3z8?autoplay=1&mute=0&loop=1&playlist=GwckzsDf3z8";
+            document.getElementById('sound-btn').style.display = 'none';
+        }
+
+        // Typewriter
+        const letter = "Every day with you feels like a new chapter in the most beautiful story ever told. You are my best friend, my greatest adventure, and my home. This Valentine's Day, I wanted to tell you that I don't just want a today with you—I want all my tomorrows.";
         let i = 0;
         function typeWriter() {
             if (i < letter.length) {
@@ -90,29 +80,14 @@
         }
         window.onload = typeWriter;
 
-        // Celebration Effect
+        // Celebration
         function celebrate() {
-            const duration = 5 * 1000;
-            const animationEnd = Date.now() + duration;
-            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-
-            function randomInRange(min, max) {
-                return Math.random() * (max - min) + min;
-            }
-
-            const interval = setInterval(function() {
-                const timeLeft = animationEnd - Date.now();
-                if (timeLeft <= 0) return clearInterval(interval);
-                const particleCount = 50 * (timeLeft / duration);
-                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
-                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
-            }, 250);
-
+            confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 }, colors: ['#800020', '#DCAE96', '#ffffff'] });
             document.getElementById('success-msg').classList.remove('hidden');
             document.getElementById('no-btn').style.display = 'none';
         }
 
-        // Runaway Button Logic
+        // Runaway Button
         function moveNo() {
             const btn = document.getElementById('no-btn');
             btn.style.position = 'absolute';
@@ -122,3 +97,4 @@
     </script>
 </body>
 </html>
+
